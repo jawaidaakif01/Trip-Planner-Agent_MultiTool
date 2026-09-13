@@ -1,0 +1,10 @@
+langchain
+langchain-google-genai
+langchain-core
+python-dotenv
+openmeteo-requests
+requests-cache 
+retry-requests 
+numpy 
+pandas
+openpyxl
