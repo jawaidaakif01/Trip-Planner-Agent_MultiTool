@@ -93,7 +93,3 @@ def get_weather_forecast(location: str, days: int) -> dict:
         "longitude": float(longitude),
         "daily_forecast": daily_forecast_data
     }
-
-
-
-print(get_weather_forecast("new delhi", 10))

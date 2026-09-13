@@ -167,13 +167,3 @@ def get_historical_weather(location: str, start_date: str, end_date: str, years:
         "historical_years_used": years,
         "average_weather": average_data
     }
-
-
-
-print(
-    get_historical_weather(
-        "Paris",
-        "2026-10-15",
-        "2026-10-25"
-    )
-)
