@@ -9,6 +9,13 @@ api_key = os.getenv("EXCHANGERATE_API_KEY")
 
 
 def currency_conversion(amount: float, base_currency: str, target_currency: str) -> float:
+    """
+    Converts an amount from the base currency to the target currency.
+
+    The function maps the provided currencies to their ISO 4217 codes,
+    fetches the conversion rate from the ExchangeRate API, and calculates
+    the converted amount.
+    """
     try:
         base_currency = get_currency_code(base_currency)
         target_currency = get_currency_code(target_currency)

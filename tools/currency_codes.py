@@ -187,6 +187,9 @@ currency_name_to_code = {
 
 
 def get_currency_code(currency: str) -> str:
+    """
+    This function returns the currency code in ISO 4217 format by mapping the currency from a dictionary
+    """
 
     currency = currency.strip()
 
