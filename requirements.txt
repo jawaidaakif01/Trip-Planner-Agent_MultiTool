@@ -8,3 +8,5 @@ retry-requests
 numpy 
 pandas
 openpyxl
+langchain_tavily
+tavily
