@@ -15,9 +15,17 @@ def get_location_coordinates(location: str) -> dict:
 
         r = requests.get(url=NOMINATIM_URL, params=params, headers=headers)
 
+        if r.status_code != 200:
+            raise ValueError(f"Geocoding failed: {r.status_code}")
+
+        
         if r.status_code==200:
             print("success")
             data = r.json()
+
+            if not data:
+                raise ValueError(f"Location not found: {location}")
+                
             latitude = data[0]['lat']
             longitude = data[0]['lon']
 
@@ -32,4 +40,4 @@ def get_location_coordinates(location: str) -> dict:
 
 
     except Exception as e:
-        return e
+        raise ValueError(f"Location extraction failed: {e}")
