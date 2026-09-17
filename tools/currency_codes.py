@@ -190,16 +190,40 @@ def get_currency_code(currency: str) -> str:
     """
     Returns the ISO 4217 currency code by mapping the currency
     name to its corresponding code from the currency dictionary.
+
+    Handles:
+    - ISO codes directly (e.g. "INR", "EUR")
+    - Full currency names (e.g. "Indian rupee")
+    - Plural names (e.g. "Indian rupees" -> "Indian rupee")
+    - Extra whitespace and mixed casing
     """
 
     currency = currency.strip()
 
+    # Check if it's already a valid ISO 4217 code
     if currency.upper() in currency_codes:
         return currency.upper()
 
-    currency_code = currency_name_to_code.get(currency.lower())
+    normalized = currency.lower().strip()
 
+    # Try exact name match
+    currency_code = currency_name_to_code.get(normalized)
     if currency_code:
         return currency_code
 
-    raise ValueError(f"Invalid currency: {currency}")
+    # Try singular form (strip trailing 's' for plurals like "rupees" -> "rupee")
+    if normalized.endswith("s"):
+        currency_code = currency_name_to_code.get(normalized[:-1])
+        if currency_code:
+            return currency_code
+
+    # Try matching just the first word (e.g. "Euro" from "Euro zone")
+    first_word = normalized.split()[0] if normalized.split() else ""
+    for name, code in currency_name_to_code.items():
+        if name.startswith(first_word) and len(first_word) > 3:
+            return code
+
+    raise ValueError(
+        f"Invalid currency: '{currency}'. "
+        f"Please use an ISO 4217 code (e.g. 'INR') or a full currency name (e.g. 'Indian rupee')."
+    )

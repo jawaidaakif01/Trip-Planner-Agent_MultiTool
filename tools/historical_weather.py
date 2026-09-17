@@ -4,13 +4,16 @@ import pandas as pd
 import requests_cache
 from retry_requests import retry
 
-from location_extractor import get_location_coordinates
+from tools.location_extractor import get_location_coordinates
+
+from langchain_core.tools import tool
 
 cache_session = requests_cache.CachedSession(".cache", expire_after=3600)
 retry_session = retry(cache_session, retries=5, backoff_factor=0.2)
 
 openmeteo = openmeteo_requests.Client(session=retry_session)
 
+@tool
 def get_historical_weather(location: str, start_date: str, end_date: str, years: int = 5) -> dict:
     """
     This function returns the weather forecast of a location for more than 16 days ahead. This function fetches the historical weather data of past 5 years for the specific dates mentioned of that particular location and returns the average of it.

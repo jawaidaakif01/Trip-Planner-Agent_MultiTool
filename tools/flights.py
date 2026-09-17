@@ -2,21 +2,33 @@ import os
 import requests
 from dotenv import load_dotenv
 
-load_dotenv("../.env")
+load_dotenv()
+
+from langchain_core.tools import tool
 
 api_key = os.getenv("SERPAPI_API_KEY")
 
-
+@tool
 def flight_search(
-    origin: str,
-    destination: str,
+    origin: str, # Must be a 3-letter IATA airport code, e.g. "DEL" for New Delhi
+    destination: str, # Must be a 3-letter IATA airport code, e.g. "CDG" for Paris
     departure_date: str,
     return_date: str,
-    currency: str = "INR",
+    flight_currency: str = "INR",
     adults: int = 1
 ) -> dict:
     """
     Searches for flights using Google Flights through SerpApi.
+
+    IMPORTANT: 'origin' and 'destination' MUST be 3-letter IATA airport codes.
+    Never pass city names. Always convert city names to IATA codes first.
+    Examples: New Delhi -> DEL, Paris -> CDG, Istanbul -> IST, Dubai -> DXB,
+    London -> LHR, New York -> JFK, Mumbai -> BOM, Bangkok -> BKK,
+    Guwahati -> GAU, Shillong -> SHL, Kolkata -> CCU.
+
+    IMPORTANT: 'departure_date' and 'return_date' MUST be in 'YYYY-MM-DD' format.
+    Example: October 15, 2026 -> '2026-10-15'. Never use any other date format.
+    Always ensure dates are in the future relative to today.
 
     Returns flight options with airline, flight number, departure and
     arrival details, duration, stops, price, baggage information,
@@ -31,7 +43,7 @@ def flight_search(
         "arrival_id": destination,
         "outbound_date": departure_date,
         "return_date": return_date,
-        "currency": currency,
+        "currency": flight_currency,
         "adults": adults,
         "hl": "en",
         "api_key": api_key
@@ -102,7 +114,7 @@ def flight_search(
         "destination": destination,
         "departure_date": departure_date,
         "return_date": return_date,
-        "currency": currency,
+        "currency": flight_currency,
         "adults": adults,
         "flights_found": len(flights),
         "lowest_price": (

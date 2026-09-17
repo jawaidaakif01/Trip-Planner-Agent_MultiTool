@@ -13,31 +13,23 @@ def get_location_coordinates(location: str) -> dict:
         params = {"q": location, "format":"jsonv2"}
         headers = {"User-Agent": "WeatherApp_LearningProject/1.0 (aakif.dev@gmail.com)"}
 
-        r = requests.get(url=NOMINATIM_URL, params=params, headers=headers)
+        r = requests.get(url=NOMINATIM_URL, params=params, headers=headers, timeout=10)
 
         if r.status_code != 200:
             raise ValueError(f"Geocoding failed: {r.status_code}")
 
-        
-        if r.status_code==200:
-            print("success")
-            data = r.json()
+        data = r.json()
 
-            if not data:
-                raise ValueError(f"Location not found: {location}")
-                
-            latitude = data[0]['lat']
-            longitude = data[0]['lon']
+        if not data:
+            raise ValueError(f"Location not found: {location}")
 
-            coordinates = {
-                "latitude": latitude,
-                "longitude": longitude
-            }
+        latitude = data[0]['lat']
+        longitude = data[0]['lon']
 
-            # print(coordinates)
-
-            return coordinates
-
+        return {
+            "latitude": latitude,
+            "longitude": longitude
+        }
 
     except Exception as e:
         raise ValueError(f"Location extraction failed: {e}")

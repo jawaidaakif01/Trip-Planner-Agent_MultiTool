@@ -5,10 +5,12 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "currency-codes>=23.6.4",
     "langchain>=1.4.0",
     "langchain-core>=1.6.3",
     "langchain-google-genai>=4.4.0",
     "langchain-tavily>=0.2.18",
+    "langgraph>=1.2.11",
     "numpy>=2.5.3",
     "openmeteo-requests>=1.7.5",
     "openpyxl>=3.1.5",

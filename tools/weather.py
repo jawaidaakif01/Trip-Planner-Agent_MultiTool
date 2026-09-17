@@ -4,7 +4,9 @@ import pandas as pd
 import requests_cache
 from retry_requests import retry
 
-from location_extractor import get_location_coordinates
+from tools.location_extractor import get_location_coordinates
+
+from langchain_core.tools import tool
 
 # Setup the Open-Meteo API client with cache and retry on error
 cache_session = requests_cache.CachedSession('.cache', expire_after = 3600)
@@ -14,6 +16,7 @@ openmeteo = openmeteo_requests.Client(session = retry_session)
 # Make sure all required weather variables are listed here
 # The order of variables in hourly or daily is important to assign them correctly below
 
+@tool
 def get_weather_forecast(location: str, days: int) -> dict:
     """
     This function returns the weather forecast of a location only for 16 days ahead. It cannot give the weather forecast data for 17th and further days.

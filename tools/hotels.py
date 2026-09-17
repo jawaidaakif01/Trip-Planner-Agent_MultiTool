@@ -2,11 +2,13 @@ import os
 import requests
 from dotenv import load_dotenv
 
-load_dotenv("../.env")
+load_dotenv()
 
 api_key = os.getenv("STAYAPI_KEY")
 
+from langchain_core.tools import tool
 
+@tool
 def hotel_search(
     location: str,
     check_in: str,

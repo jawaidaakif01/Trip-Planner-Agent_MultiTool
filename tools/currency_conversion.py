@@ -2,12 +2,14 @@ import requests
 from dotenv import load_dotenv
 import os
 
-from currency_codes import get_currency_code
+from tools.currency_codes import get_currency_code
 
-load_dotenv("../.env")
+from langchain_core.tools import tool
+
+load_dotenv()
 api_key = os.getenv("EXCHANGERATE_API_KEY") 
 
-
+@tool
 def currency_conversion(amount: float, base_currency: str, target_currency: str) -> float:
     """
     Converts an amount from the base currency to the target currency.
