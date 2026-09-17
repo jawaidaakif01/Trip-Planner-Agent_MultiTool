@@ -12,3 +12,4 @@ langchain_tavily
 tavily
 langgraph
 currency-codes
+streamlit
