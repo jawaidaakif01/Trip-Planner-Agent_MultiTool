@@ -1,6 +1,6 @@
 # ✈️ Trip Planner Agent
 
-An AI-powered multi-tool travel assistant built with **LangGraph**, **Gemini**, and **Streamlit**. Plan complete trips in a single conversation — the agent autonomously searches real-time flights, hotels, weather forecasts, historical climate data, currency rates, and the web to build you a personalized itinerary.
+An AI-powered multi-tool travel assistant built with **LangChain**, **Gemini**, and **Streamlit** (using **LangGraph** solely for conversation memory checkpointing). Plan complete trips in a single conversation — the agent autonomously searches real-time flights, hotels, weather forecasts, historical climate data, currency rates, and the web to build you a personalized itinerary.
 
 ---
 
@@ -22,15 +22,16 @@ An AI-powered multi-tool travel assistant built with **LangGraph**, **Gemini**, 
 
 ## 🧠 How It Works
 
-The agent is built on **LangGraph's `create_agent`** with an `InMemorySaver` checkpointer for persistent conversation memory. It uses **Gemini 3.5 Flash Lite** as the LLM and is equipped with 6 specialized tools. When you describe your trip, the agent decides which tools to call, in what order, and synthesizes the results into a complete plan.
+The agent is built using **LangChain** (`create_agent`) with **Gemini 3.5 Flash Lite** as the LLM and is equipped with 6 specialized tools. It uses LangGraph's `InMemorySaver` checkpointer specifically for managing conversational memory across turns. When you describe your trip, the agent decides which tools to call, in what order, and synthesizes the results into a complete plan.
 
 ```
 User Input
     │
     ▼
 ┌─────────────────────────────────────────┐
-│           LangGraph Agent               │
-│  (Gemini 3.5 Flash Lite + ReAct loop)  │
+│            LangChain Agent              │
+│  (Gemini 3.5 Flash Lite + ReAct loop)   │
+│   Memory: LangGraph InMemorySaver       │
 └─────────────────────────────────────────┘
     │
     ├── ✈️  flight_search        → SerpAPI (Google Flights)
@@ -134,7 +135,7 @@ python main.py
 ```
 Trip-Planner-Agent_MultiTool/
 │
-├── agent.py                  # LangGraph agent setup (LLM, tools, prompt, memory)
+├── agent.py                  # LangChain agent setup (LLM, tools, prompt, LangGraph memory)
 ├── app.py                    # Streamlit chat UI with generative UI cards
 ├── main.py                   # CLI entrypoint
 │
@@ -178,9 +179,3 @@ Trip-Planner-Agent_MultiTool/
 ## 🔭 Tracing
 
 The agent integrates with **LangSmith** for full observability — every tool call, model invocation, token count, and latency is traced. Set `LANGSMITH_API_KEY` in your `.env` to enable it.
-
----
-
-## 📄 License
-
-MIT
